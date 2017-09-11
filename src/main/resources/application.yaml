@@ -1,0 +1,35 @@
+server:
+  session:
+    timeout: 30
+  port: 9216
+spring:
+  # mail 的相关配置
+  mail:
+    host: smtp.126.com
+    # 授权码是用于登录第三方邮件客户端的专用密码
+    password: 920116li
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    username: lishenming8@126.com
+  # redis 的相关配置
+  redis:
+    host: "192.168.31.80"
+    pool:
+      max-active: 8
+      max-idle: 8
+      max-wait: -1
+      min-idle: 0
+    port: 6379
+    timeout: 0
+    database: 7
+datasource:
+  password: lishenming
+  username: lishenming
+  driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    url: "jdbc:mysql://localhost:3306/ssq?characterEncoding=UTF-8&useSSL=false"
