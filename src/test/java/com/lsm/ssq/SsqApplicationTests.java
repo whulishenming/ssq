@@ -30,7 +30,7 @@ public class SsqApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		for (int i = 3; i <5 ; i++) {
+		for (int i = 3; i <17 ; i++) {
 			for (int j = 1; j < 184; j++) {
 				try {
 					ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", i * 1000 + j);
@@ -41,43 +41,30 @@ public class SsqApplicationTests {
 		}
 	}
 
-	@Test
+	/*@Test
 	public void test() {
 		for (int i = 0; i < 10000; i++) {
-			if(redisKit.exists(RedisKeyConstant.PERIODS_NOW)){
-				Integer needPeriods = Integer.parseInt(redisKit.get(RedisKeyConstant.PERIODS_NOW));
-
-				Integer year = needPeriods/1000;
-
-				Integer yearPeriod = needPeriods - year*1000;
+			if(redisKit.exists(RedisKeyConstant.NEXT_PERIOD)){
+				Integer nextPeriod = Integer.parseInt(redisKit.get(RedisKeyConstant.NEXT_PERIOD));
 
 				try {
-					if (!ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", year * 1000 + yearPeriod + 1)) {
-						ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/",(year + 1) * 1000 + 1);
+					boolean isSuccess = ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", nextPeriod);
+					if (isSuccess) {
+						SSQHistoryRecords latestRecord = JSONObject.parseObject(redisKit.hGet(RedisKeyConstant.ALL_THE_SSQ, nextPeriod.toString()), SSQHistoryRecords.class);
+						StringBuilder stringBuffer = new StringBuilder("");
+						stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
+								.append(latestRecord.getSecondRedBall()).append("-")
+								.append(latestRecord.getThirdRedBall()).append("-")
+								.append(latestRecord.getFourthRedBall()).append("-")
+								.append(latestRecord.getFifthRedBall()).append("-")
+								.append(latestRecord.getSixthRedBall()).append("-")
+								.append(latestRecord.getFirstBlueBall());
+						// 预测下期开球，并发邮件
+						predictSSQ(nextPeriod.toString(), stringBuffer.toString());
 					}
 				} catch (Exception e) {
-					try {
-						ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/",(year + 1) * 1000 + 1);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+
 					e.printStackTrace();
-				}
-
-				Integer newPeriods = Integer.parseInt(redisKit.get(RedisKeyConstant.PERIODS_NOW));
-
-				if (!needPeriods.equals(newPeriods)) {
-					SSQHistoryRecords latestRecord = JSONObject.parseObject(redisKit.hGet(RedisKeyConstant.ALL_THE_SSQ, newPeriods.toString()), SSQHistoryRecords.class);
-					StringBuilder stringBuffer = new StringBuilder("");
-					stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
-							.append(latestRecord.getSecondRedBall()).append("-")
-							.append(latestRecord.getThirdRedBall()).append("-")
-							.append(latestRecord.getFourthRedBall()).append("-")
-							.append(latestRecord.getFifthRedBall()).append("-")
-							.append(latestRecord.getSixthRedBall()).append("-")
-							.append(latestRecord.getFirstBlueBall());
-					// 预测下期开球，并发邮件
-					predictSSQ(newPeriods.toString(), stringBuffer.toString());
 				}
 			}
 		}
@@ -158,6 +145,6 @@ public class SsqApplicationTests {
 				}
 			}
 		}
-	}
+	}*/
 
 }

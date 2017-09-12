@@ -29,48 +29,26 @@ public class SSQScheduled {
     private String url;
 
     public void getLatestSSQ() {
-        if(redisKit.exists(RedisKeyConstant.PERIODS_NOW)){
-            Integer needPeriods = Integer.parseInt(redisKit.get(RedisKeyConstant.PERIODS_NOW));
-
-            Integer year = needPeriods/1000;
-
-            Integer yearPeriod = needPeriods - year*1000;
+        if(redisKit.exists(RedisKeyConstant.NEXT_PERIOD)){
+            Integer nextPeriod = Integer.parseInt(redisKit.get(RedisKeyConstant.NEXT_PERIOD));
 
             try {
-                if (!ssqServiceImpl.insert(url, year * 1000 + yearPeriod + 1)) {
-                    ssqServiceImpl.insert(url,(year+1)*1000+yearPeriod);
+                boolean isSuccess = ssqServiceImpl.insert(url, nextPeriod);
+                if (isSuccess) {
+                    SSQHistoryRecords latestRecord = JSONObject.parseObject(redisKit.hGet(RedisKeyConstant.ALL_THE_SSQ, nextPeriod.toString()), SSQHistoryRecords.class);
+                    StringBuilder stringBuffer = new StringBuilder("");
+                    stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
+                            .append(latestRecord.getSecondRedBall()).append("-")
+                            .append(latestRecord.getThirdRedBall()).append("-")
+                            .append(latestRecord.getFourthRedBall()).append("-")
+                            .append(latestRecord.getFifthRedBall()).append("-")
+                            .append(latestRecord.getSixthRedBall()).append("-")
+                            .append(latestRecord.getFirstBlueBall());
+                    // 预测下期开球，并发邮件
+                    predictSSQ(nextPeriod.toString(), stringBuffer.toString());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-            Integer newPeriods = Integer.parseInt(redisKit.get(RedisKeyConstant.PERIODS_NOW));
-
-            if (!needPeriods.equals(newPeriods)) {
-                SSQHistoryRecords latestRecord = JSONObject.parseObject(redisKit.hGet(RedisKeyConstant.ALL_THE_SSQ, newPeriods.toString()), SSQHistoryRecords.class);
-                StringBuilder stringBuffer = new StringBuilder("");
-                stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
-                        .append(latestRecord.getSecondRedBall()).append("-")
-                        .append(latestRecord.getThirdRedBall()).append("-")
-                        .append(latestRecord.getFourthRedBall()).append("-")
-                        .append(latestRecord.getFifthRedBall()).append("-")
-                        .append(latestRecord.getSixthRedBall()).append("-")
-                        .append(latestRecord.getFirstBlueBall());
-                // 预测下期开球，并发邮件
-                predictSSQ(newPeriods.toString(), stringBuffer.toString());
-            }
-        }
-    }
-
-    public void getHistorySSQ() {
-        log.info("get history ssq");
-        for (int i = 3; i <20 ; i++) {
-            for (int j = 1; j < 184; j++) {
-                try {
-                    ssqServiceImpl.insert(url, i * 1000 + j);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }
     }

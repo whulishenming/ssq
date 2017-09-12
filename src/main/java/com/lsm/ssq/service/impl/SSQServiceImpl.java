@@ -51,6 +51,8 @@ public class SSQServiceImpl implements ISSQService {
             }
             if(record != null){
 
+                redisKit.set(RedisKeyConstant.NEXT_PERIOD, record.getNextPeriod().toString());
+
                 redisKit.hSet(RedisKeyConstant.ALL_THE_SSQ, record.getPeriods().toString(), JSONObject.toJSONString(record));
 
                 if (redisKit.exists(RedisKeyConstant.BLUE_BALL_STATISTICS)) {
@@ -94,16 +96,6 @@ public class SSQServiceImpl implements ISSQService {
                 record.setUpdateTime(now);
                 record.setIsDeleted((byte) 0);
                 ssqHistoryRecordsRepository.save(record);
-
-                //更新最大的
-                if(redisKit.exists(RedisKeyConstant.PERIODS_NOW)){
-                    Integer perviodsNow = Integer.parseInt(redisKit.get(RedisKeyConstant.PERIODS_NOW));
-                    if(perviodsNow < periods){
-                        redisKit.set(RedisKeyConstant.PERIODS_NOW, periods.toString());
-                    }
-                }else {
-                    redisKit.set(RedisKeyConstant.PERIODS_NOW, periods.toString());
-                }
 
                 insertFlag = true;
 

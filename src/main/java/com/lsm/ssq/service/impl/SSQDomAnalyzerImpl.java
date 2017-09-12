@@ -36,9 +36,15 @@ public class SSQDomAnalyzerImpl implements ISSQDomAnalyzer{
         Element element = document.body().getElementsByClass("cfont2").get(0).child(0);
         result.put("periods",Integer.parseInt(element.text()));
 
-        Element yuceLink = document.select("a[href$=yuce.shtml]").get(0);
+        String text = document.select("a[href$=yuce.shtml]").get(0).text();
+        try {
+            int nextPeriod = Integer.parseInt(text.substring(5, 10));
 
-        int indexOf = yuceLink.text().indexOf("双色球");
+            result.put("nextPeriod",nextPeriod);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
 
         Element element1 = document.body().getElementsByClass("span_right").get(0);

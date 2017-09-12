@@ -38,6 +38,9 @@ public class SSQHistoryRecords {
     @Column(name = "periods")
     private Integer periods;
 
+    @Column(name = "next_period")
+    private Integer nextPeriod;
+
     @Column(name = "lottery_date")
     private Date lotteryDate;
 

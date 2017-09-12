@@ -3,7 +3,7 @@ package com.lsm.ssq.constant;
 
 public class RedisKeyConstant {
 
-    public static final String PERIODS_NOW = "periods_now";
+    public static final String NEXT_PERIOD = "next_period";
 
     public static final String ALL_THE_SSQ = "all_the_ssq";
 
