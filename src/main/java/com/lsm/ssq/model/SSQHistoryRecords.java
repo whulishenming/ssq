@@ -38,6 +38,9 @@ public class SSQHistoryRecords {
     @Column(name = "periods")
     private Integer periods;
 
+    @Column(name = "lottery_date")
+    private Date lotteryDate;
+
     @Column(name = "is_deleted")
     private Byte isDeleted;
 

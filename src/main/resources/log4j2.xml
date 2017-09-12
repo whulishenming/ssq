@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration monitorInterval="60" status="warn">
-    <Properties>
-        <Property name="log-path">d:</Property>
-    </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout>
@@ -11,8 +8,9 @@
                 </pattern>>
             </PatternLayout>
         </Console>
-        <RollingFile name="RollingFileInfo" fileName="${sys:user.home}/logs/hpaasvc/info.log"
-                     filePattern="${sys:user.home}/logs/hpaasvc/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+        <!-- 获取用户HOME目录的占位符是“${sys:user.home}” -->
+        <RollingFile name="RollingFileInfo" fileName="${sys:user.home}/logs/ssq/info.log"
+                     filePattern="${sys:user.home}/logs/ssq/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="INFO" />
                 <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
@@ -24,8 +22,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileWarn" fileName="${sys:user.home}/logs/hpaasvc/warn.log"
-                     filePattern="${sys:user.home}/logs/hpaasvc/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileWarn" fileName="${sys:user.home}/logs/ssq/warn.log"
+                     filePattern="${sys:user.home}/logs/ssq/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="WARN" />
                 <ThresholdFilter level="ERROR" onMatch="DENY"
@@ -38,8 +36,8 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="${sys:user.home}/logs/hpaasvc/error.log"
-                     filePattern="${sys:user.home}/logs/hpaasvc/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFileError" fileName="${sys:user.home}/logs/ssq/error.log"
+                     filePattern="${sys:user.home}/logs/ssq/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="ERROR" />
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n" />
             <Policies>

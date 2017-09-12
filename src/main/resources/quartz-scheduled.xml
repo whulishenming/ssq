@@ -5,18 +5,32 @@
                             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
     <!-- 配置定时任务类 -->
-    <bean id="scheduledTest2" class="com.lsm.ssq.task.SSQScheduled"></bean>
+    <bean id="ssqScheduled" class="com.lsm.ssq.task.SSQScheduled"></bean>
     <!-- 配置任务明细 -->
-    <bean id="task" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="scheduledTest2" />
+    <bean id="getLatestSSQTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="ssqScheduled" />
         <property name="targetMethod" value="getLatestSSQ" />
         <property name="concurrent" value="false" />
     </bean>
     <!-- 配置触发时机 -->
-    <bean id="cronTimerTriggerEpolicyJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="task"></property>
+    <bean id="getLatestSSQJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="getLatestSSQTask"></property>
         <property name="cronExpression">
-            <value>0 0/1 * * * ? </value>
+            <value>0 0 0 1/1 * ? </value>
+        </property>
+    </bean>
+
+    <!-- 配置任务明细 -->
+    <bean id="getHistorySSQTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="ssqScheduled" />
+        <property name="targetMethod" value="getHistorySSQ" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <!-- 配置触发时机 -->
+    <bean id="getHistorySSQJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="getHistorySSQTask"></property>
+        <property name="cronExpression">
+            <value>0 0/10 * * * ? </value>
         </property>
     </bean>
 
@@ -25,7 +39,8 @@
           autowire="no">
         <property name="triggers">
             <list>
-                <ref bean="cronTimerTriggerEpolicyJob"/>
+                <ref bean="getLatestSSQJob"/>
+                <ref bean="getHistorySSQJob"/>
             </list>
         </property>
     </bean>
