@@ -95,5 +95,6 @@ public class SSQScheduled {
                 .append(firstBlueBall);
 
         mailKit.sendSimpleMail("lishenming8@126.com", "双色球预测", stringBuffer.toString());
+        mailKit.sendSimpleMail("958653609@qq.com", "双色球预测", stringBuffer.toString());
     }
 }
