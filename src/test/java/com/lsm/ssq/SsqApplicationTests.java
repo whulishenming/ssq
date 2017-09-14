@@ -28,7 +28,7 @@ public class SsqApplicationTests {
 	@Autowired
 	private MailKit mailKit;
 
-	@Test
+	/*@Test
 	public void contextLoads() {
 		for (int i = 3; i <17 ; i++) {
 			for (int j = 1; j < 184; j++) {
@@ -39,7 +39,7 @@ public class SsqApplicationTests {
 				}
 			}
 		}
-	}
+	}*/
 
 	/*@Test
 	public void test() {
