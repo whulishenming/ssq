@@ -16,7 +16,8 @@
     <bean id="getLatestSSQJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="getLatestSSQTask"></property>
         <property name="cronExpression">
-            <value>0 0 0 1/1 * ? </value>
+            <!-- 每周日、周二和周四的22:30执行 -->
+            <value>0 30 22 ? * 1,3,5 </value>
         </property>
     </bean>
 
