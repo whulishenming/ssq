@@ -16,6 +16,7 @@ spring:
             enable: true
             required: true
     username: lishenming8@126.com
+    port: 25
   # redis 的相关配置
   redis:
     host: "192.168.31.80"

@@ -5,6 +5,7 @@ import com.lsm.ssq.constant.RedisKeyConstant;
 import com.lsm.ssq.model.SSQHistoryRecords;
 import com.lsm.ssq.plugins.MailKit;
 import com.lsm.ssq.plugins.RedisKit;
+import com.lsm.ssq.repository.SSQHistoryRecordsRepository;
 import com.lsm.ssq.service.ISSQService;
 import com.lsm.ssq.utils.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +20,25 @@ public class SSQScheduled {
     private ISSQService ssqServiceImpl;
     @Autowired
     private MailKit mailKit;
+    @Autowired
+    private SSQHistoryRecordsRepository ssqHistoryRecordsRepository;
 
     @Value("${doubleball.preurl}")
     private String url;
 
     public void getLatestSSQ() {
+
+        log.info("job start");
+
         if(redisKit.exists(RedisKeyConstant.NEXT_PERIOD)){
             Integer nextPeriod = Integer.parseInt(redisKit.get(RedisKeyConstant.NEXT_PERIOD));
 
             try {
                 boolean isSuccess = ssqServiceImpl.insert(url, nextPeriod);
                 if (isSuccess) {
-                    SSQHistoryRecords latestRecord = JSONObject.parseObject(redisKit.hGet(RedisKeyConstant.ALL_THE_SSQ, nextPeriod.toString()), SSQHistoryRecords.class);
+
+                    SSQHistoryRecords latestRecord = ssqHistoryRecordsRepository.findByPeriods(nextPeriod);
+
                     StringBuilder stringBuffer = new StringBuilder("");
                     stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
                             .append(latestRecord.getSecondRedBall()).append("-")
@@ -48,7 +56,7 @@ public class SSQScheduled {
         }
     }
 
-    private void predictSSQ(String periods, String latestRecord) {
+    public void predictSSQ(String periods, String latestRecord) {
         int[] balls = new int[34];
         StringBuilder stringBuffer = new StringBuilder(periods + "期开奖结果：" + latestRecord + System.getProperty("line.separator"));
 

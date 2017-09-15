@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SSQHistoryRecordsRepository extends JpaRepository<SSQHistoryRecords, Long> {
 
+    SSQHistoryRecords findByPeriods(Integer periods);
+
 
 }

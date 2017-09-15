@@ -30,7 +30,9 @@ public class SSQServiceImpl implements ISSQService {
 
         boolean insertFlag = false;
 
-        if(redisKit.hExists(RedisKeyConstant.ALL_THE_SSQ, periods.toString())){
+        SSQHistoryRecords latestRecord = ssqHistoryRecordsRepository.findByPeriods(periods);
+
+        if(latestRecord != null){
             return false;
         }
 
@@ -52,8 +54,6 @@ public class SSQServiceImpl implements ISSQService {
             if(record != null){
 
                 redisKit.set(RedisKeyConstant.NEXT_PERIOD, record.getNextPeriod().toString());
-
-                redisKit.hSet(RedisKeyConstant.ALL_THE_SSQ, record.getPeriods().toString(), JSONObject.toJSONString(record));
 
                 if (redisKit.exists(RedisKeyConstant.BLUE_BALL_STATISTICS)) {
 

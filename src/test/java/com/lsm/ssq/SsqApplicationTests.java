@@ -5,7 +5,9 @@ import com.lsm.ssq.constant.RedisKeyConstant;
 import com.lsm.ssq.model.SSQHistoryRecords;
 import com.lsm.ssq.plugins.MailKit;
 import com.lsm.ssq.plugins.RedisKit;
+import com.lsm.ssq.repository.SSQHistoryRecordsRepository;
 import com.lsm.ssq.service.ISSQService;
+import com.lsm.ssq.task.SSQScheduled;
 import com.lsm.ssq.utils.RandomUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +29,15 @@ public class SsqApplicationTests {
 	private ISSQService ssqServiceImpl;
 	@Autowired
 	private MailKit mailKit;
+	@Autowired
+	private SSQScheduled ssqScheduled;
+	@Autowired
+	private SSQHistoryRecordsRepository ssqHistoryRecordsRepository;
 
 	/*@Test
 	public void contextLoads() {
-		for (int i = 3; i <17 ; i++) {
-			for (int j = 1; j < 184; j++) {
+		for (int i = 17; i <18 ; i++) {
+			for (int j = 1; j < 108; j++) {
 				try {
 					ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", i * 1000 + j);
 				} catch (Exception e) {
@@ -39,6 +45,21 @@ public class SsqApplicationTests {
 				}
 			}
 		}
+	}*/
+/*
+	@Test
+	public void predictSSQ() {
+		SSQHistoryRecords latestRecord = ssqHistoryRecordsRepository.findByPeriods(17108);
+
+		StringBuilder stringBuffer = new StringBuilder("");
+		stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
+				.append(latestRecord.getSecondRedBall()).append("-")
+				.append(latestRecord.getThirdRedBall()).append("-")
+				.append(latestRecord.getFourthRedBall()).append("-")
+				.append(latestRecord.getFifthRedBall()).append("-")
+				.append(latestRecord.getSixthRedBall()).append("-")
+				.append(latestRecord.getFirstBlueBall());
+		ssqScheduled.predictSSQ("17108", stringBuffer.toString());
 	}*/
 
 	/*@Test

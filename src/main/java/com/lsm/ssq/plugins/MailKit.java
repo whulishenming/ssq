@@ -31,7 +31,7 @@ public class MailKit {
             log.info("简单邮件已经发送。");
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("发送简单邮件时发生异常！", e);
+            log.error("发送简单邮件时发生异常！content:{}", content);
         }
     }
 }

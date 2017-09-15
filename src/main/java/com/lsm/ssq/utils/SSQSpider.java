@@ -13,7 +13,7 @@ public class SSQSpider {
 
         ISSQDomAnalyzer ssqDomAnalyzerImpl = SpringContextUtil.getBean(ISSQDomAnalyzer.class);
 
-        log.info("开始抓取文章："+url);
+//        log.info("开始抓取文章："+url);
 
         Map<String, Object> map = ssqDomAnalyzerImpl.forListMap(Jsoup.connect(url).timeout(50000).get());
 
