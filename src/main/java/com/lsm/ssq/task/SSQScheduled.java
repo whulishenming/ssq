@@ -1,6 +1,5 @@
 package com.lsm.ssq.task;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lsm.ssq.constant.RedisKeyConstant;
 import com.lsm.ssq.model.SSQHistoryRecords;
 import com.lsm.ssq.plugins.MailKit;
@@ -56,9 +55,17 @@ public class SSQScheduled {
         }
     }
 
+    /**
+     *
+     * @param periods 当前期
+     * @param latestRecord  当前期结果
+     */
     public void predictSSQ(String periods, String latestRecord) {
         int[] balls = new int[34];
-        StringBuilder stringBuffer = new StringBuilder(periods + "期开奖结果：" + latestRecord + System.getProperty("line.separator"));
+        String lastPredict = redisKit.get(RedisKeyConstant.NEXT_BALL_PREDICT);
+
+        StringBuilder stringBuffer = new StringBuilder("上一期预测结果：" + lastPredict + System.getProperty("line.separator"))
+                .append(periods + "期开奖结果：" + latestRecord + System.getProperty("line.separator"));
 
         Integer firstBlueBall = Integer.parseInt(RandomUtil.randomFromSet(redisKit.zRange(RedisKeyConstant.BLUE_BALL_STATISTICS, 0, 5)));
         Integer firstRedBall = Integer.parseInt(RandomUtil.randomFromSet(redisKit.zRevRange(RedisKeyConstant.FIRST_RED_BALL_STATISTICS, 0, 4)));
@@ -88,16 +95,22 @@ public class SSQScheduled {
             sixthRedBall = Integer.parseInt(RandomUtil.randomFromSet(redisKit.zRevRange(RedisKeyConstant.SIX_RED_BALL_STATISTICS, 0, 4)));
         }
 
-        stringBuffer.append("下期预测结果")
+        String nextBall = new StringBuffer()
                 .append(firstRedBall).append("-")
                 .append(secondRedBall).append("-")
                 .append(thirdRedBall).append("-")
                 .append(fourthRedBall).append("-")
                 .append(fifthRedBall).append("-")
                 .append(sixthRedBall).append("-")
-                .append(firstBlueBall);
+                .append(firstBlueBall).toString();
 
-        mailKit.sendSimpleMail("lishenming8@126.com", "双色球预测", stringBuffer.toString());
-        mailKit.sendSimpleMail("958653609@qq.com", "双色球预测", stringBuffer.toString());
+        redisKit.set(RedisKeyConstant.NEXT_BALL_PREDICT, nextBall);
+
+        stringBuffer.append(Integer.parseInt(periods) + 1)
+                .append("期预测结果")
+                .append(nextBall);
+
+        mailKit.sendSimpleMail("lishenming8@126.com", Integer.parseInt(periods) + 1 +"期双色球预测", stringBuffer.toString());
+        mailKit.sendSimpleMail("958653609@qq.com", Integer.parseInt(periods) + 1 +"期双色球预测", stringBuffer.toString());
     }
 }

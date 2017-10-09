@@ -35,8 +35,11 @@ public class SsqApplicationTests {
 	private SSQHistoryRecordsRepository ssqHistoryRecordsRepository;
 
 	/*@Test
-	public void contextLoads() {
-		for (int i = 17; i <18 ; i++) {
+	public void contextLoads() throws Exception {
+
+		// 获取，某一期结果
+		ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", 17118);
+		*//*for (int i = 17; i <18 ; i++) {
 			for (int j = 1; j < 108; j++) {
 				try {
 					ssqServiceImpl.insert("http://kaijiang.500.com/shtml/ssq/", i * 1000 + j);
@@ -44,12 +47,11 @@ public class SsqApplicationTests {
 					e.printStackTrace();
 				}
 			}
-		}
-	}*/
-/*
+		}*//*
+	}
 	@Test
 	public void predictSSQ() {
-		SSQHistoryRecords latestRecord = ssqHistoryRecordsRepository.findByPeriods(17108);
+		SSQHistoryRecords latestRecord = ssqHistoryRecordsRepository.findByPeriods(17118);
 
 		StringBuilder stringBuffer = new StringBuilder("");
 		stringBuffer.append(latestRecord.getFirstRedBall()).append("-")
@@ -59,7 +61,7 @@ public class SsqApplicationTests {
 				.append(latestRecord.getFifthRedBall()).append("-")
 				.append(latestRecord.getSixthRedBall()).append("-")
 				.append(latestRecord.getFirstBlueBall());
-		ssqScheduled.predictSSQ("17108", stringBuffer.toString());
+		ssqScheduled.predictSSQ("17118", stringBuffer.toString());
 	}*/
 
 	/*@Test

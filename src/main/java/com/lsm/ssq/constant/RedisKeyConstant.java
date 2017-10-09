@@ -5,6 +5,8 @@ public class RedisKeyConstant {
 
     public static final String NEXT_PERIOD = "next_period";
 
+    public static final String NEXT_BALL_PREDICT = "next_ball_predict";
+
     public static final String FIRST_RED_BALL_STATISTICS = "first_red_ball_statistics";
 
     public static final String SECOND_RED_BALL_STATISTICS = "second_red_ball_statistics";
