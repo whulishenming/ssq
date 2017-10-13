@@ -64,7 +64,7 @@ public class SSQScheduled {
         int[] balls = new int[34];
         String lastPredict = redisKit.get(RedisKeyConstant.NEXT_BALL_PREDICT);
 
-        StringBuilder stringBuffer = new StringBuilder("上一期预测结果：" + lastPredict + System.getProperty("line.separator"))
+        StringBuilder stringBuffer = new StringBuilder(periods + "期预测结果：" + lastPredict + System.getProperty("line.separator"))
                 .append(periods + "期开奖结果：" + latestRecord + System.getProperty("line.separator"));
 
         Integer firstBlueBall = Integer.parseInt(RandomUtil.randomFromSet(redisKit.zRange(RedisKeyConstant.BLUE_BALL_STATISTICS, 0, 5)));
@@ -107,7 +107,7 @@ public class SSQScheduled {
         redisKit.set(RedisKeyConstant.NEXT_BALL_PREDICT, nextBall);
 
         stringBuffer.append(Integer.parseInt(periods) + 1)
-                .append("期预测结果")
+                .append("期预测结果：")
                 .append(nextBall);
 
         mailKit.sendSimpleMail("lishenming8@126.com", Integer.parseInt(periods) + 1 +"期双色球预测", stringBuffer.toString());
